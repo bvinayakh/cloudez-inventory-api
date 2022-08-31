@@ -1,2 +1,5 @@
-# cloudez-inventory-api
-cloudez-inventory-api
+# Building the spingboot jar
+./mvnw -DskipTests package
+
+# Building Docker image
+docker build -t cloudez-inventory-api .
