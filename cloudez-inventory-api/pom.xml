@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>spring-rest</groupId>
 	<artifactId>cloudez-inventory-api</artifactId>
-	<version>1.1</version>
+	<version>1.0</version>
 	<name>cloudez-inventory-api</name>
 	<description>CloudEz Inventory API</description>
 	<properties>
@@ -51,6 +51,15 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-iam</artifactId>
 			<version>1.11.947</version>
@@ -64,10 +73,6 @@
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-sts</artifactId>
 			<version>1.11.947</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-quartz</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -90,4 +95,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+
 </project>

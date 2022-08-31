@@ -3,7 +3,6 @@ package com.cez.api.v1.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +16,11 @@ import com.amazonaws.services.identitymanagement.model.OpenIDConnectProviderList
 import com.amazonaws.services.identitymanagement.model.Role;
 import com.amazonaws.services.identitymanagement.model.User;
 import com.amazonaws.services.resourcegroupstaggingapi.AWSResourceGroupsTaggingAPI;
-import com.amazonaws.services.resourcegroupstaggingapi.model.AWSResourceGroupsTaggingAPIException;
 import com.amazonaws.services.resourcegroupstaggingapi.model.GetResourcesRequest;
 import com.amazonaws.services.resourcegroupstaggingapi.model.GetResourcesResult;
 import com.amazonaws.services.resourcegroupstaggingapi.model.ResourceTagMapping;
 import com.cez.api.v1.aws.auth.Credentials;
 import com.cez.api.v1.commons.aws.Client;
-import com.cez.api.v1.exceptions.AuthExceptionResolver;
 
 @RestController
 @RequestMapping("/api/v1/cloudez-inventory-api")
@@ -31,7 +28,9 @@ public class CloudezInventoryController
 {
   @Autowired
   private AssetRepository repository;
+
   private Credentials credentials = null;
+
   private AWSResourceGroupsTaggingAPI tagClient = null;
   private AmazonIdentityManagement iamClient = null;
 
@@ -71,15 +70,24 @@ public class CloudezInventoryController
     iamClient = new Client(account, credentials).getIAMClient();
     ListUsersRequest listUserRequest = new ListUsersRequest();
     for (User user : iamClient.listUsers(listUserRequest).getUsers())
+    {
       resourcesList.add(user.getArn());
+      totalAssetsDiscovered++;
+    }
 
     ListRolesRequest listRolesRequest = new ListRolesRequest();
     for (Role role : iamClient.listRoles(listRolesRequest).getRoles())
+    {
       resourcesList.add(role.getArn());
+      totalAssetsDiscovered++;
+    }
 
     ListOpenIDConnectProvidersRequest listOIDCProviders = new ListOpenIDConnectProvidersRequest();
     for (OpenIDConnectProviderListEntry oidc : iamClient.listOpenIDConnectProviders(listOIDCProviders).getOpenIDConnectProviderList())
+    {
       resourcesList.add(oidc.getArn());
+      totalAssetsDiscovered++;
+    }
 
 
     for (String arn : resourcesList)
@@ -105,20 +113,9 @@ public class CloudezInventoryController
         asset.setResourceType(Arn.fromString(arn).getResource().getResourceType());
 
       totalAssetsDiscovered++;
+      repository.save(asset);
 
-      updateDB(asset);
     }
-
     return totalAssetsDiscovered;
   }
-
-
-  private void updateDB(AWSAsset asset)
-  {
-    System.out.println(asset.toString());
-    repository.save(asset);
-  }
-
-
-
 }
