@@ -3,6 +3,7 @@ package com.cez.api.v1.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,9 @@ public class CloudezInventoryController
   private AssetRepository repository;
 
   private Credentials credentials = null;
+  
+  @Value("${execution.mode}")
+  private String executionMode;
 
   private AWSResourceGroupsTaggingAPI tagClient = null;
   private AmazonIdentityManagement iamClient = null;
@@ -46,7 +50,7 @@ public class CloudezInventoryController
   {
     int totalAssetsDiscovered = 0;
     List<String> resourcesList = new ArrayList<>();
-    credentials = new Credentials();
+    credentials = new Credentials(executionMode);
 
     // discover all resources from tagging API
     tagClient = new Client(account, credentials).getAWSResourceGroupTaggingClient(region);

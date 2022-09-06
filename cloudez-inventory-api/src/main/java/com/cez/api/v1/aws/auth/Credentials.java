@@ -1,7 +1,5 @@
 package com.cez.api.v1.aws.auth;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.WebIdentityTokenCredentialsProvider;
@@ -9,28 +7,23 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 
 public class Credentials implements AWSCredentialsProvider
 {
-  private static final Logger logger = LoggerFactory.getLogger(Credentials.class);
+  @SuppressWarnings("unused")
   private String account = null;
+
+  private String executionMode = null;
 
   private AWSCredentials credentials = null;
 
-  public Credentials()
-  {}
+  public Credentials(String mode)
+  {
+    this.executionMode = mode;
+  }
 
   @Override
   public AWSCredentials getCredentials()
   {
-    // get profile credentials
-    credentials = new ProfileCredentialsProvider().getCredentials();
-    // if null then get eks container credentials
-    if (credentials == null)
-    {
-      credentials = WebIdentityTokenCredentialsProvider.builder().build().getCredentials();
-      logger.debug("using container credentials");
-    }
-    else
-      logger.debug("using profile credentials");
-
+    if (executionMode.equalsIgnoreCase("local")) credentials = new ProfileCredentialsProvider().getCredentials();
+    else if (executionMode.equalsIgnoreCase("apiserver")) credentials = WebIdentityTokenCredentialsProvider.builder().build().getCredentials();
     return credentials;
   }
 

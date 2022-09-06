@@ -1,4 +1,4 @@
-package com.cez.api.v1.commons.tasks;
+package com.cez.api.v1.commons.utils;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
