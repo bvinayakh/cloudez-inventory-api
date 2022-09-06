@@ -23,7 +23,7 @@ import com.cez.api.v1.aws.auth.Credentials;
 import com.cez.api.v1.commons.aws.Client;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/cloudez-inventory-api/api/v1")
 public class CloudezInventoryController
 {
   @Autowired
