@@ -1,18 +1,18 @@
 package com.cez.api.v1.commons.utils;
 
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InventoryReportJob implements Job
+public class InventoryReportJob extends QuartzJobBean
 {
 
   @Override
-  public void execute(JobExecutionContext arg0) throws JobExecutionException
+  protected void executeInternal(JobExecutionContext context) throws JobExecutionException
   {
-    System.out.println("Inventory Report Scanning Job");
+    System.out.println("Inventory Scanning Job");
   }
 
 }
