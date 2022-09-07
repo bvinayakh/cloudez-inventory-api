@@ -1,4 +1,4 @@
-package com.cez.api.v1.aws.auth;
+package com.cez.api.v1.auth.aws;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;

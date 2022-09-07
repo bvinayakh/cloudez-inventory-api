@@ -20,7 +20,7 @@ import com.amazonaws.services.resourcegroupstaggingapi.AWSResourceGroupsTaggingA
 import com.amazonaws.services.resourcegroupstaggingapi.model.GetResourcesRequest;
 import com.amazonaws.services.resourcegroupstaggingapi.model.GetResourcesResult;
 import com.amazonaws.services.resourcegroupstaggingapi.model.ResourceTagMapping;
-import com.cez.api.v1.aws.auth.Credentials;
+import com.cez.api.v1.auth.aws.Credentials;
 import com.cez.api.v1.commons.aws.Client;
 
 @RestController
