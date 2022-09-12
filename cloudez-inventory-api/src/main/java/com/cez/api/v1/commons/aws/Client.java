@@ -8,6 +8,9 @@ import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClientB
 import com.amazonaws.services.resourcegroupstaggingapi.AWSResourceGroupsTaggingAPI;
 import com.amazonaws.services.resourcegroupstaggingapi.AWSResourceGroupsTaggingAPIClient;
 import com.amazonaws.services.resourcegroupstaggingapi.AWSResourceGroupsTaggingAPIClientBuilder;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.cez.api.v1.auth.aws.Credentials;
 
 public class Client
@@ -33,6 +36,14 @@ public class Client
   public AmazonIdentityManagement getIAMClient()
   {
     AmazonIdentityManagementClientBuilder client = AmazonIdentityManagementClient.builder();
+    client.setCredentials(credentials);
+    return client.build();
+  }
+
+  public AmazonS3 getS3Client(String... region)
+  {
+    AmazonS3ClientBuilder client = AmazonS3Client.builder();
+    if (region.length > 0) client.setRegion(region[0]);
     client.setCredentials(credentials);
     return client.build();
   }
