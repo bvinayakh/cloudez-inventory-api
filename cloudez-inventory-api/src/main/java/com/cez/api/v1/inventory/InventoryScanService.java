@@ -119,10 +119,11 @@ public class InventoryScanService
 
         csv.printRecord(asset.getAccount(), asset.getService(), asset.getUniqueIdentifier(), asset.getResourceType(), asset.getArn(), asset.getRegion());
         repository.save(asset);
-
-        // push report to S3 bucket
-        s3Client.putObject(bucketName, type + "/" + reportName, report).getContentMd5();
       }
+      // push report to S3 bucket
+      s3Client.putObject(bucketName, type + "/" + reportName, report).getContentMd5();
+      out.close();
+      csv.close();
       report.delete();
     }
     catch (IOException e)
