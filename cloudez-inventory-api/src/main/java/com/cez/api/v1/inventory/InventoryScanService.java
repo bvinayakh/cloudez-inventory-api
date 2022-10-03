@@ -52,7 +52,9 @@ public class InventoryScanService
   private AmazonIdentityManagement iamClient = null;
   private AmazonS3 s3Client = null;
 
-  @Scheduled(fixedDelay = 86400000, initialDelay = 3000)
+
+  // @Scheduled(fixedDelay = 86400000, initialDelay = 3000)
+  @Scheduled(fixedDelay = 1440 * 60 * 1000, initialDelay = 3000)
   public void scan()
   {
     List<String> resourcesList = new ArrayList<>();
@@ -91,8 +93,7 @@ public class InventoryScanService
       resourcesList.add(oidc.getArn());
 
     DateTime time = new DateTime();
-    String reportName =
-        type + "-" + time.getYear() + time.getMonthOfYear() + time.getDayOfMonth() + "-" + time.getHourOfDay() + "HH" + time.getMinuteOfHour() + "MM" + ".csv";
+    String reportName = type + "-" + time.getYear() + time.getMonthOfYear() + time.getDayOfMonth() + ".csv";
     s3Client = new Client(account, credentials).getS3Client();
     String header[] = {"Account", "Service", "ID", "Type", "ARN", "Region"};
 
